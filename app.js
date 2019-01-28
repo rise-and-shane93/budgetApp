@@ -48,16 +48,17 @@ What I will learn:
 // BUDGET CONTROLLER
 var budgetController = (function () {
 
-    var x = 23;
+    var Expense = function(id, description, value) {
+    	this.id = id;
+    	this.description = description;
+    	this.value = value;
+    };
 
-    var add = function(a) {
-        return x + a;
-    }
-    return {
-        publicTest: function(b) {
-            return add(b);
-        }
-    }
+    var Income = function(id, description, value) {
+    	this.id = id;
+    	this.description = description;
+    	this.value = value;
+    };
 
 })();
 
@@ -89,7 +90,23 @@ var UIController = (function() {
 // GLOBAL APP CONTROLLER
 var controller = (function(budgetCtrl, UICtrl) {
 
-    var DOM = UICtrl.getDOMstrings();
+	var setupEventListeners = function() {
+
+	    var DOM = UICtrl.getDOMstrings();
+
+	    document.querySelector(DOM.inputBtn).addEventListener('click', ctrlAddItem);
+
+	    document.addEventListener('keypress', function(event) {
+	        
+	        if (event.keyCode === 13 || event.which === 13) {
+	            //console.log('enter was pressed.');
+	            ctrlAddItem();
+	        }
+
+	    });
+
+	};
+
 
     var ctrlAddItem = function() {
 
@@ -104,15 +121,14 @@ var controller = (function(budgetCtrl, UICtrl) {
 
     }
 
-    document.querySelector(DOM.inputBtn).addEventListener('click', ctrlAddItem);
+    return {
+    	init: function() {
+    		console.log('app has started');
+    		setupEventListeners();
+    	}
+    }
 
-    document.addEventListener('keypress', function(event) {
-        
-        if (event.keyCode === 13 || event.which === 13) {
-            //console.log('enter was pressed.');
-            ctrlAddItem();
-        }
-
-    });
 
 })(budgetController, UIController);
+
+controller.init();
