@@ -126,7 +126,7 @@ var UIController = (function() {
             return {
                 type: document.querySelector(DOMstrings.inputType).value,
                 description: document.querySelector(DOMstrings.inputDesc).value,
-                value: parseInt(document.querySelector(DOMstrings.inputValue).value)
+                value: parseFloat(document.querySelector(DOMstrings.inputValue).value)
             };
         },
 
@@ -150,6 +150,19 @@ var UIController = (function() {
             // Insert the HTML into the DOM
             document.querySelector(element).insertAdjacentHTML('beforeend', newHtml);
 
+        },
+
+        clearFields: function() {
+            var fields, fieldsArr;
+            fields = document.querySelectorAll(DOMstrings.inputDesc + ', ' + DOMstrings.inputValue);
+
+            fieldsArr = Array.prototype.slice.call(fields);
+
+            fieldsArr.forEach(function(current, index, array) {
+                current.value = "";
+            });
+
+            fieldsArr[0].focus();
         },
 
         getDOMstrings: function() {
@@ -179,6 +192,15 @@ var controller = (function(budgetCtrl, UICtrl) {
 
 	};
 
+    var updateBudget = function() {
+        
+        // 1. Calculate the budget 
+        
+        // 2. Return the budget
+
+        // 3. Display the budget on the UI. 
+
+    };
 
     var ctrlAddItem = function() {
 
@@ -186,14 +208,21 @@ var controller = (function(budgetCtrl, UICtrl) {
         // 1. Get the field input data
         input = UICtrl.getInput();
 
+        if (input.description === '' || input.value === '') {
+            console.log('wut');
+        }
+
         // 2. Add the item to the budget contorller
         newItem = budgetCtrl.addItem(input.type, input.description, input.value);
 
         // 3. Add the new item to the UI
         UICtrl.addListItem(newItem, input.type);
-        // 4. Calculate the budget 
-        // 5. Display the budget on the UI. 
 
+        // 4. Clear the fields
+        UICtrl.clearFields();
+
+        // 5. Calculate and update budget
+        updateBudget();
     }
 
     return {
