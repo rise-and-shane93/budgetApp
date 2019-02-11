@@ -209,23 +209,24 @@ var controller = (function(budgetCtrl, UICtrl) {
         input = UICtrl.getInput();
 
         //tests if the description and value fields are filled out.
-        if (input.description === '' || isNaN(input.value)) {
-            alert('Please enter a description and/or value');
+        // if (input.description === '' || isNaN(input.value)) {
+        //     alert('Please enter a description and/or value');
+        //     UICtrl.clearFields();
+        //     return;
+        // }
+        if (input.description !== '' && !isNaN(input.value) && input.value > 0) {
+            // 2. Add the item to the budget contorller
+            newItem = budgetCtrl.addItem(input.type, input.description, input.value);
+
+            // 3. Add the new item to the UI
+            UICtrl.addListItem(newItem, input.type);
+
+            // 4. Clear the fields
             UICtrl.clearFields();
-            return;
+
+            // 5. Calculate and update budget
+            updateBudget();
         }
-
-        // 2. Add the item to the budget contorller
-        newItem = budgetCtrl.addItem(input.type, input.description, input.value);
-
-        // 3. Add the new item to the UI
-        UICtrl.addListItem(newItem, input.type);
-
-        // 4. Clear the fields
-        UICtrl.clearFields();
-
-        // 5. Calculate and update budget
-        updateBudget();
     }
 
     return {
