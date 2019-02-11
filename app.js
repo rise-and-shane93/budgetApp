@@ -208,8 +208,11 @@ var controller = (function(budgetCtrl, UICtrl) {
         // 1. Get the field input data
         input = UICtrl.getInput();
 
-        if (input.description === '' || input.value === '') {
-            console.log('wut');
+        //tests if the description and value fields are filled out.
+        if (input.description === '' || isNaN(input.value)) {
+            alert('Please enter a description and/or value');
+            UICtrl.clearFields();
+            return;
         }
 
         // 2. Add the item to the budget contorller
